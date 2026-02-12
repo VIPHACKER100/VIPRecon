@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  viprecon:
+    build: .
+    volumes:
+      - ./output:/app/output
+      - ./config:/app/config
+    command: ["-t", "https://example.com"]

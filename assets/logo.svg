@@ -1,0 +1,35 @@
+<svg width="400" height="120" viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2" />
+      <feOffset dx="1" dy="1" result="offsetblur" />
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3" />
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Magnifying Glass Icon -->
+  <g transform="translate(10, 10)">
+    <circle cx="45" cy="45" r="35" stroke="url(#grad1)" stroke-width="8" fill="none" filter="url(#shadow)" />
+    <line x1="70" y1="70" x2="95" y2="95" stroke="url(#grad1)" stroke-width="10" stroke-linecap="round" filter="url(#shadow)" />
+    <circle cx="35" cy="35" r="5" fill="white" fill-opacity="0.6" />
+  </g>
+
+  <!-- VIP Text -->
+  <text x="120" y="80" font-family="'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="70" fill="url(#grad1)" filter="url(#shadow)">VIP</text>
+  
+  <!-- Recon Text -->
+  <text x="235" y="80" font-family="'Segoe UI', Roboto, sans-serif" font-weight="300" font-size="70" fill="#333">Recon</text>
+  
+  <!-- Tagline -->
+  <text x="123" y="105" font-family="'Segoe UI', Roboto, sans-serif" font-size="12" fill="#666" letter-spacing="2">DEVELOPED BY VIPHACKER100 (ARYAN AHIRWAR)</text>
+</svg>

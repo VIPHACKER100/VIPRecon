@@ -1,0 +1,131 @@
+{
+  "wordpress": {
+    "headers": ["X-Powered-By: PHP"],
+    "meta": ["generator:WordPress"],
+    "html_patterns": [
+      "/wp-content/",
+      "/wp-includes/",
+      "wp-json"
+    ],
+    "cookies": ["wordpress_", "wp-settings"],
+    "scripts": ["wp-embed.min.js", "wp-emoji-release.min.js"],
+    "category": "CMS"
+  },
+  "drupal": {
+    "headers": ["X-Generator: Drupal"],
+    "meta": ["generator:Drupal"],
+    "html_patterns": ["/sites/default/", "Drupal.settings"],
+    "cookies": ["SESS"],
+    "scripts": ["drupal.js"],
+    "category": "CMS"
+  },
+  "joomla": {
+    "meta": ["generator:Joomla"],
+    "html_patterns": ["/components/com_", "/media/jui/"],
+    "cookies": ["joomla_"],
+    "scripts": ["joomla.javascript.js"],
+    "category": "CMS"
+  },
+  "apache": {
+    "headers": ["Server: Apache"],
+    "category": "Web Server"
+  },
+  "nginx": {
+    "headers": ["Server: nginx"],
+    "category": "Web Server"
+  },
+  "iis": {
+    "headers": ["Server: Microsoft-IIS"],
+    "category": "Web Server"
+  },
+  "cloudflare": {
+    "headers": ["Server: cloudflare", "CF-RAY"],
+    "cookies": ["__cfduid", "__cflb"],
+    "category": "CDN"
+  },
+  "jquery": {
+    "scripts": ["jquery.min.js", "jquery.js"],
+    "html_patterns": ["jQuery JavaScript Library"],
+    "category": "JavaScript Library"
+  },
+  "react": {
+    "scripts": ["react.min.js", "react-dom.min.js"],
+    "html_patterns": ["data-reactroot", "data-react-helmet"],
+    "category": "JavaScript Framework"
+  },
+  "vue": {
+    "scripts": ["vue.min.js", "vue.js"],
+    "html_patterns": ["v-cloak", "v-if", "v-for"],
+    "category": "JavaScript Framework"
+  },
+  "angular": {
+    "scripts": ["angular.min.js", "angular.js"],
+    "html_patterns": ["ng-app", "ng-controller", "ng-model"],
+    "category": "JavaScript Framework"
+  },
+  "bootstrap": {
+    "scripts": ["bootstrap.min.js"],
+    "html_patterns": ["class=\"container\"", "class=\"row\"", "class=\"col-"],
+    "category": "CSS Framework"
+  },
+  "php": {
+    "headers": ["X-Powered-By: PHP"],
+    "cookies": ["PHPSESSID"],
+    "category": "Programming Language"
+  },
+  "asp.net": {
+    "headers": ["X-AspNet-Version", "X-Powered-By: ASP.NET"],
+    "cookies": ["ASP.NET_SessionId"],
+    "html_patterns": ["__VIEWSTATE", "__EVENTVALIDATION"],
+    "category": "Framework"
+  },
+  "express": {
+    "headers": ["X-Powered-By: Express"],
+    "category": "Framework"
+  },
+  "django": {
+    "cookies": ["csrftoken", "sessionid"],
+    "html_patterns": ["csrfmiddlewaretoken"],
+    "category": "Framework"
+  },
+  "laravel": {
+    "cookies": ["laravel_session"],
+    "html_patterns": ["laravel"],
+    "category": "Framework"
+  },
+  "rails": {
+    "headers": ["X-Powered-By: Phusion Passenger"],
+    "cookies": ["_session_id"],
+    "category": "Framework"
+  },
+  "varnish": {
+    "headers": ["Via: varnish", "X-Varnish"],
+    "category": "Cache"
+  },
+  "google-analytics": {
+    "scripts": ["google-analytics.com/analytics.js", "googletagmanager.com/gtag/js"],
+    "html_patterns": ["UA-", "G-"],
+    "category": "Analytics"
+  },
+  "google-tag-manager": {
+    "scripts": ["googletagmanager.com/gtm.js"],
+    "html_patterns": ["GTM-"],
+    "category": "Tag Manager"
+  },
+  "shopify": {
+    "headers": ["X-ShopId"],
+    "html_patterns": ["cdn.shopify.com", "Shopify."],
+    "category": "E-commerce"
+  },
+  "magento": {
+    "cookies": ["frontend"],
+    "html_patterns": ["/skin/frontend/", "Mage.Cookies"],
+    "scripts": ["mage/"],
+    "category": "E-commerce"
+  },
+  "woocommerce": {
+    "html_patterns": ["woocommerce", "wc-"],
+    "scripts": ["woocommerce"],
+    "category": "E-commerce"
+  }
+}

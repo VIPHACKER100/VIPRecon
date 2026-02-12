@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIPRecon Report - {{ target }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header .target {
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+
+        .header .timestamp {
+            font-size: 0.9em;
+            opacity: 0.7;
+            margin-top: 10px;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .summary-card .number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .summary-card .label {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .critical {
+            color: #dc3545;
+        }
+
+        .high {
+            color: #fd7e14;
+        }
+
+        .medium {
+            color: #ffc107;
+        }
+
+        .low {
+            color: #17a2b8;
+        }
+
+        .info {
+            color: #6c757d;
+        }
+
+        .success {
+            color: #28a745;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .subsection-title {
+            font-size: 1.3em;
+            color: #764ba2;
+            margin: 20px 0 10px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .badge-critical {
+            background: #dc3545;
+            color: white;
+        }
+
+        .badge-high {
+            background: #fd7e14;
+            color: white;
+        }
+
+        .badge-medium {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .badge-low {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .badge-info {
+            background: #6c757d;
+            color: white;
+        }
+
+        .badge-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .vulnerability-card {
+            background: #fff;
+            border-left: 4px solid #dc3545;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .vulnerability-card.high {
+            border-left-color: #fd7e14;
+        }
+
+        .vulnerability-card.medium {
+            border-left-color: #ffc107;
+        }
+
+        .vulnerability-card.low {
+            border-left-color: #17a2b8;
+        }
+
+        .vulnerability-card h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .vulnerability-card .detail {
+            margin: 8px 0;
+            color: #666;
+        }
+
+        .vulnerability-card .detail strong {
+            color: #333;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .tech-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #667eea;
+        }
+
+        .tech-card .name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .tech-card .category {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .tech-card .confidence {
+            margin-top: 8px;
+            font-size: 0.85em;
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-style: italic;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🔍 VIPRecon Security Report</h1>
+            <div class="target">{{ target }}</div>
+            <div class="timestamp">Generated: {{ generated_at }}</div>
+            <div class="timestamp">Scan Duration: {{ duration }}s</div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="summary">
+            <div class="summary-card">
+                <div class="number success">{{ technologies_count }}</div>
+                <div class="label">Technologies</div>
+            </div>
+            <div class="summary-card">
+                <div class="number info">{{ subdomains_count }}</div>
+                <div class="label">Subdomains</div>
+            </div>
+            <div class="summary-card">
+                <div class="number info">{{ endpoints_count }}</div>
+                <div class="label">Endpoints</div>
+            </div>
+            <div class="summary-card">
+                <div class="number {% if vulnerabilities_count > 0 %}critical{% else %}success{% endif %}">
+                    {{ vulnerabilities_count }}
+                </div>
+                <div class="label">Vulnerabilities</div>
+            </div>
+        </div>
+
+        <!-- Vulnerability Breakdown -->
+        {% if vulnerabilities_count > 0 %}
+        <div class="summary">
+            <div class="summary-card">
+                <div class="number critical">{{ critical_count }}</div>
+                <div class="label">Critical</div>
+            </div>
+            <div class="summary-card">
+                <div class="number high">{{ high_count }}</div>
+                <div class="label">High</div>
+            </div>
+            <div class="summary-card">
+                <div class="number medium">{{ medium_count }}</div>
+                <div class="label">Medium</div>
+            </div>
+            <div class="summary-card">
+                <div class="number low">{{ low_count }}</div>
+                <div class="label">Low</div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Main Content -->
+        <div class="content">
+
+            <!-- Vulnerabilities Section -->
+            <div class="section">
+                <h2 class="section-title">🔒 Security Vulnerabilities</h2>
+                {% if vulnerabilities %}
+                {% for vuln in vulnerabilities %}
+                <div class="vulnerability-card {{ vuln.severity|lower }}">
+                    <h3>
+                        <span class="badge badge-{{ vuln.severity|lower }}">{{ vuln.severity }}</span>
+                        {{ vuln.type }}
+                    </h3>
+                    <div class="detail"><strong>Description:</strong> {{ vuln.description }}</div>
+                    {% if vuln.url %}
+                    <div class="detail"><strong>URL:</strong> {{ vuln.url }}</div>
+                    {% endif %}
+                    {% if vuln.parameter %}
+                    <div class="detail"><strong>Parameter:</strong> {{ vuln.parameter }}</div>
+                    {% endif %}
+                    {% if vuln.proof %}
+                    <div class="detail"><strong>Proof:</strong> {{ vuln.proof }}</div>
+                    {% endif %}
+                    {% if vuln.remediation %}
+                    <div class="detail"><strong>Remediation:</strong> {{ vuln.remediation }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="no-data">✓ No vulnerabilities detected!</div>
+                {% endif %}
+            </div>
+
+            <!-- Technologies Section -->
+            <div class="section">
+                <h2 class="section-title">💻 Detected Technologies</h2>
+                {% if technologies %}
+                <div class="tech-grid">
+                    {% for tech in technologies %}
+                    <div class="tech-card">
+                        <div class="name">{{ tech.name }}</div>
+                        <div class="category">{{ tech.category }}</div>
+                        <div class="confidence">Confidence: {{ tech.confidence }}%</div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="no-data">No technologies detected</div>
+                {% endif %}
+            </div>
+
+            <!-- Subdomains Section -->
+            <div class="section">
+                <h2 class="section-title">🌐 Discovered Subdomains</h2>
+                {% if subdomains %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Subdomain</th>
+                            <th>IP Addresses</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for subdomain in subdomains %}
+                        <tr>
+                            <td>{{ subdomain.name }}</td>
+                            <td>{{ subdomain.ip_addresses|join(', ') }}</td>
+                            <td>
+                                {% if subdomain.is_alive %}
+                                <span class="badge badge-success">Alive</span>
+                                {% if subdomain.status_code %}
+                                [{{ subdomain.status_code }}]
+                                {% endif %}
+                                {% else %}
+                                <span class="badge badge-info">Not Responding</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="no-data">No subdomains discovered</div>
+                {% endif %}
+            </div>
+
+            <!-- Security Headers Section -->
+            <div class="section">
+                <h2 class="section-title">🛡️ Security Headers</h2>
+                {% if security_headers %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Header</th>
+                            <th>Status</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for header in security_headers %}
+                        <tr>
+                            <td>{{ header.header_name }}</td>
+                            <td>
+                                {% if header.present %}
+                                <span class="badge badge-success">Present</span>
+                                {% else %}
+                                <span class="badge badge-{{ header.severity|lower }}">Missing</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ header.value or 'N/A' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="no-data">No security header information available</div>
+                {% endif %}
+            </div>
+
+            <!-- Open Ports Section -->
+            <div class="section">
+                <h2 class="section-title">🔌 Open Ports & Services</h2>
+                {% if open_ports %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Port</th>
+                            <th>Status</th>
+                            <th>Service</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for port in open_ports %}
+                        <tr>
+                            <td><strong>{{ port.port }}</strong></td>
+                            <td><span class="badge badge-success">{{ port.status }}</span></td>
+                            <td>{{ port.service }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="no-data">No open ports detected in common range</div>
+                {% endif %}
+            </div>
+
+            <!-- Directory Brute Force Section -->
+            <div class="section">
+                <h2 class="section-title">📂 Directory Discovery</h2>
+                {% if directory_items %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>URL</th>
+                            <th>Status</th>
+                            <th>Content Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in directory_items %}
+                        <tr>
+                            <td><a href="{{ item.url }}" target="_blank">{{ item.url }}</a></td>
+                            <td>
+                                {% if item.status == 200 %}
+                                <span class="badge badge-success">{{ item.status }}</span>
+                                {% elif item.status >= 300 and item.status < 400 %} <span class="badge badge-info">{{
+                                    item.status }}</span>
+                                    {% else %}
+                                    <span class="badge badge-low">{{ item.status }}</span>
+                                    {% endif %}
+                            </td>
+                            <td>{{ item.content_type or 'N/A' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="no-data">No interesting directories or files discovered</div>
+                {% endif %}
+            </div>
+
+            <!-- Endpoints Section -->
+            {% if endpoints %}
+            <div class="section">
+                <h2 class="section-title">🔗 Discovered Endpoints</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Path</th>
+                            <th>Source</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for endpoint in endpoints[:50] %}
+                        <tr>
+                            <td><span class="badge badge-info">{{ endpoint.method }}</span></td>
+                            <td>{{ endpoint.path }}</td>
+                            <td>{{ endpoint.source }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% if endpoints|length > 50 %}
+                <p style="text-align: center; margin-top: 10px; color: #666;">
+                    ... and {{ endpoints|length - 50 }} more endpoints
+                </p>
+                {% endif %}
+            </div>
+            {% endif %}
+
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Generated by VIPRecon v{{ version }} | Developed by viphacker100 (Aryan Ahirwar)</p>
+            <p style="margin-top: 5px; font-size: 0.85em;">
+                This report contains sensitive security information. Handle with care.
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

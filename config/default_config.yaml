@@ -1,0 +1,106 @@
+# Default Configuration for VIPRecon Tool
+
+# HTTP Client Settings
+http:
+  timeout: 30  # Request timeout in seconds
+  max_retries: 3  # Maximum number of retry attempts
+  user_agent: "VIPRecon/1.0 (Security Scanner)"
+  verify_ssl: true
+  follow_redirects: true
+  max_redirects: 5
+
+# Rate Limiting
+rate_limit:
+  requests_per_second: 1.0  # Default: 1 request per second
+  burst_size: 5  # Allow short bursts
+
+# Concurrency
+concurrency:
+  max_concurrent_requests: 10
+  max_concurrent_modules: 5
+
+# Output Settings
+output:
+  directory: "./output"
+  log_directory: "./output/logs"
+  report_formats: ["json", "html"]
+  timestamp_format: "%Y%m%d_%H%M%S"
+
+# Logging
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  console_output: true
+  file_output: true
+  max_log_size_mb: 10
+  backup_count: 5
+
+# Wordlists
+wordlists:
+  subdomains: "./config/wordlists/subdomains.txt"
+  api_paths: "./config/wordlists/api_paths.txt"
+  directories: "./config/wordlists/directories.txt"
+
+# Module Settings
+modules:
+  basic_info:
+    enabled: true
+    timeout: 30
+  
+  fingerprinting:
+    enabled: true
+    confidence_threshold: 50  # Minimum confidence score (0-100)
+  
+  subdomain_enum:
+    enabled: true
+    max_subdomains: 1000
+    use_certificate_transparency: true
+    dns_timeout: 5
+  
+  waf_detection:
+    enabled: true
+    test_payloads: 5
+  
+  api_discovery:
+    enabled: true
+    check_swagger: true
+    check_openapi: true
+  
+  vulnerability_scanner:
+    enabled: true
+    check_xss: true
+    check_sqli: true
+    check_open_redirect: true
+    check_command_injection: false  # More aggressive, disabled by default
+    check_directory_traversal: true
+  
+  cors_checker:
+    enabled: true
+    test_origins: ["https://evil.com", "null"]
+  
+  js_analyzer:
+    enabled: true
+    max_js_files: 50
+    extract_endpoints: true
+    extract_secrets: true
+  
+  security_headers:
+    enabled: true
+
+# Scan Behavior
+scan:
+  stop_on_error: false  # Continue scanning even if a module fails
+  save_checkpoints: true
+  checkpoint_interval: 60  # Save checkpoint every 60 seconds
+
+# Proxy Settings (optional)
+proxy:
+  enabled: false
+  url: ""  # e.g., "http://127.0.0.1:8080"
+  username: ""
+  password: ""
+
+# Authentication (optional)
+authentication:
+  enabled: false
+  type: ""  # basic, bearer, cookie, oauth
+  credentials: {}

@@ -1,0 +1,49 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# IDE configs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Output and reports
+output/
+*.json
+*.html
+!docs/*.json
+!config/*.json
+
+# Logs
+*.log
+
+# API keys and secrets
+.env
+config/secrets.yaml
+config/api_keys.yaml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Distribution
+dist/
+build/
+*.egg-info/

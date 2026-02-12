@@ -308,7 +308,7 @@ For questions, issues, or feature requests:
 
 - Open an issue on GitHub
 - Reach out to **viphacker100 (Aryan Ahirwar)**
-- Email: <security@viphacker100.com>
+- Email: <viphacker.100.org@gmail.com>
 
 ## 🗺️ Roadmap
 
@@ -324,3 +324,4 @@ Planned features for future releases:
 ---
 
 **Remember:** Always obtain proper authorization before testing any system you don't own!
+

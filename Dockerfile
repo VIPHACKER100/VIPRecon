@@ -1,30 +1,47 @@
-# Use official Python lightweight image
-FROM python:3.9-slim
+# VIPRecon Docker Image
+# Professional Web Application Reconnaissance and Security Testing Tool
+# Version: 1.1.0
 
-# Set work directory
-WORKDIR /app
+FROM python:3.13-slim
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    gcc \
-    git \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy requirements and install
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy the rest of the application
-COPY . .
-
-# Create output directory
-RUN mkdir -p output
+LABEL maintainer="viphacker100 (Aryan Ahirwar) <viphacker.100.org@gmail.com>"
+LABEL description="VIPRecon - Web Application Reconnaissance and Security Testing Tool"
+LABEL version="1.1.0"
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONPATH=/app
 
-# Application entry point
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    libffi-dev \
+    libssl-dev \
+    whois \
+    dnsutils \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Copy requirements first for better caching
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
+COPY . .
+
+# Create output directory
+RUN mkdir -p /app/output
+
+# Create a non-root user for security
+RUN useradd -m -u 1000 viprecon && \
+    chown -R viprecon:viprecon /app
+USER viprecon
+
+# Set entrypoint
 ENTRYPOINT ["python", "main.py"]
 
-# Default command help
+# Default command (show help)
 CMD ["--help"]

@@ -1,0 +1,11 @@
+{
+  "source_directories": ["."],
+  "search_path": [
+    ".",
+    "src"
+  ],
+  "typeshed": "",
+  "strict": false,
+  "declare": false,
+  "python_version": "3.13"
+}

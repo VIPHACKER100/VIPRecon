@@ -21,22 +21,22 @@ def parse_arguments() -> argparse.Namespace:
         epilog="""
 Examples:
   # Basic scan
-  python -m src.main -t https://example.com
+  python main.py -t https://example.com
   
   # Scan specific modules
-  python -m src.main -t example.com -m fingerprint,subdomain_enum,vuln_scan
+  python main.py -t example.com -m fingerprint,subdomain_enum,vuln_scan
   
   # Custom rate limit and output
-  python -m src.main -t example.com --rate-limit 0.5 -o ./my_scans
+  python main.py -t example.com --rate-limit 0.5 -o ./my_scans
   
   # Generate reports
-  python -m src.main -t example.com -o ./my_scans -f both
+  python main.py -t example.com -o ./my_scans -f both
   
   # Send notification to Slack
-  python -m src.main -t example.com --webhook https://hooks.slack.com/... --webhook-service slack
+  python main.py -t example.com --webhook https://hooks.slack.com/... --webhook-service slack
   
   # Compare two scans
-  python -m src.main --diff report1.json,report2.json
+  python main.py --diff report1.json,report2.json
 
 Legal Notice:
   This tool is for authorized security testing only. Unauthorized access
@@ -209,7 +209,7 @@ Legal Notice:
     parser.add_argument(
         '--version',
         action='version',
-        version='VIPRecon 1.0.1'
+        version='VIPRecon 1.1.0'
     )
     
     args = parser.parse_args()

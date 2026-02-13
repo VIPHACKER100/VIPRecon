@@ -136,7 +136,7 @@ class ScanMetadata:
     duration_seconds: float = 0.0
     modules_run: List[str] = field(default_factory=list)
     modules_failed: List[str] = field(default_factory=list)
-    tool_version: str = "1.0.1"
+    tool_version: str = "1.1.0"
     
     def __post_init__(self):
         if self.end_time and self.start_time:

@@ -2,7 +2,7 @@
 
 Developed by **viphacker100 (Aryan Ahirwar)**
 
-![Version](https://img.shields.io/badge/version-1.0.1-blue)
+![Version](https://img.shields.io/badge/version-1.1.0-blue)
 ![Python](https://img.shields.io/badge/python-3.8+-green)
 ![License](https://img.shields.io/badge/license-MIT-orange)
 
@@ -10,7 +10,11 @@ A comprehensive web application reconnaissance and security testing tool designe
 
 ## 🐛 Bug Fixes & Updates
 
-**Latest Updates (v1.0.1):**
+**Latest Updates (v1.1.0):**
+- **New**: Advanced usage documentation with real-world examples
+- **New**: GitHub Actions CI/CD pipeline with multi-Python version testing
+- **New**: Enhanced Docker support with Python 3.13 and security improvements
+- **New**: Complete pyproject.toml with proper packaging metadata
 - Fixed RateLimiter implementation with proper token bucket algorithm
 - Improved path traversal detection in URL validation
 - Enhanced HTTP client error handling and type safety
@@ -157,6 +161,223 @@ python main.py --diff results/scan1.json,results/scan2.json
 
 # Interactive mode
 python main.py -t example.com --interactive
+```
+
+## 🚀 Advanced Usage Commands
+
+### Comprehensive Security Assessment
+
+Perform a full security audit with all features enabled:
+
+```bash
+# Full scan with authentication, custom wordlist, and notifications
+python main.py -t https://example.com \
+  --auth-type bearer \
+  --auth-token "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
+  --wordlist custom_wordlist.txt \
+  --rate-limit 2 \
+  --timeout 45 \
+  --proxy http://127.0.0.1:8080 \
+  -o ./security_audit \
+  -f both \
+  --webhook https://hooks.slack.com/services/YOUR/WEBHOOK/URL \
+  --webhook-service slack
+```
+
+### Integration with Security Tools
+
+#### Burp Suite Professional Integration
+
+```bash
+# Route traffic through Burp Suite for manual analysis
+python main.py -t example.com \
+  --proxy http://127.0.0.1:8080 \
+  --no-verify-ssl \
+  -m basic_info,fingerprint,api_discovery \
+  -o ./burp_analysis
+```
+
+#### OWASP ZAP Integration
+
+```bash
+# Scan with ZAP as proxy for active scanning
+python main.py -t example.com \
+  --proxy http://localhost:8090 \
+  --rate-limit 0.5 \
+  -v
+```
+
+### Stealth and Evasion Techniques
+
+```bash
+# Slow, stealthy scan with custom user agent
+python main.py -t example.com \
+  --rate-limit 0.2 \
+  --timeout 60 \
+  --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" \
+  --no-verify-ssl \
+  -o ./stealth_scan
+
+# Scan with randomized delays (implement via config)
+python main.py -t example.com \
+  --rate-limit 0.1 \
+  --timeout 90
+```
+
+### Targeted Module Combinations
+
+#### API Security Testing
+
+```bash
+# Focus on API discovery and testing
+python main.py -t api.example.com \
+  -m api_discovery,vuln_scan,cors_check,security_headers \
+  --auth-type bearer \
+  --auth-token "Bearer YOUR_API_TOKEN" \
+  -o ./api_security
+```
+
+#### Infrastructure Reconnaissance
+
+```bash
+# Deep infrastructure analysis
+python main.py -t example.com \
+  -m basic_info,subdomain_enum,port_scan,waf_detect,fingerprint \
+  --wordlist large_subdomains.txt \
+  -o ./infrastructure
+```
+
+#### Web Application Penetration Testing
+
+```bash
+# Comprehensive web app testing
+python main.py -t example.com \
+  -m fingerprint,vuln_scan,cors_check,js_analysis,security_headers,dir_brute \
+  --wordlist common_paths.txt \
+  --rate-limit 1.5 \
+  -o ./webapp_test
+```
+
+### Batch Scanning Multiple Targets
+
+```bash
+# Create a targets file
+cat targets.txt
+https://target1.com
+https://target2.com
+https://target3.com
+
+# Scan each target (using bash loop)
+while read target; do
+  python main.py -t "$target" \
+    -o "./results/$(echo $target | sed 's/[^a-zA-Z0-9]/_/g')" \
+    --rate-limit 1
+done < targets.txt
+```
+
+### Advanced Diff and Comparison
+
+```bash
+# Compare scans from different dates
+python main.py --diff \
+  ./results/scan_2024-01-01.json,./results/scan_2024-02-01.json \
+  -o ./diff_report
+
+# Track changes over time with automated naming
+python main.py -t example.com \
+  -o "./results/$(date +%Y-%m-%d)_scan" \
+  --webhook SLACK_URL
+```
+
+### Docker Advanced Usage
+
+```bash
+# Run with mounted volume for persistent output
+docker run -it --rm \
+  -v $(pwd)/output:/app/output \
+  -v $(pwd)/wordlists:/app/wordlists \
+  viprecon:latest \
+  -t example.com \
+  --wordlist /app/wordlists/custom.txt \
+  -o /app/output/scan_results
+
+# Run with custom config
+docker run -it --rm \
+  -v $(pwd)/config:/app/config \
+  -v $(pwd)/output:/app/output \
+  viprecon:latest \
+  -t example.com \
+  --config /app/config/custom_config.yaml
+```
+
+### Performance Optimization
+
+```bash
+# Fast scan for large scope (increase rate limit cautiously)
+python main.py -t example.com \
+  --rate-limit 5 \
+  --timeout 15 \
+  --max-retries 1 \
+  -m basic_info,fingerprint \
+  -o ./quick_scan
+
+# Distributed scanning (multiple instances with different modules)
+# Terminal 1: Infrastructure
+python main.py -t example.com -m subdomain_enum,port_scan -o ./infra &
+
+# Terminal 2: Web Application
+python main.py -t example.com -m vuln_scan,js_analysis -o ./webapp &
+
+# Terminal 3: API Testing
+python main.py -t example.com -m api_discovery,cors_check -o ./api &
+
+wait
+```
+
+### Automated Reporting and Analysis
+
+```bash
+# Generate report and auto-open
+generate_report() {
+  python main.py -t "$1" -o "$2" -f both
+  echo "Scan complete. Reports generated at $2"
+  # Auto-open HTML report (macOS)
+  open "$2/report.html"
+  # For Linux: xdg-open "$2/report.html"
+  # For Windows: start "$2\report.html"
+}
+
+generate_report "example.com" "./results/$(date +%Y%m%d_%H%M%S)"
+```
+
+### CI/CD Pipeline Integration
+
+```bash
+# Example for GitHub Actions
+python main.py -t "$TARGET_URL" \
+  -o ./security_scan \
+  --rate-limit 2 \
+  -f json
+
+# Check for critical vulnerabilities
+if grep -q "CRITICAL" ./security_scan/scan_results.json; then
+  echo "Critical vulnerabilities found!"
+  exit 1
+fi
+```
+
+### Result Processing with jq
+
+```bash
+# Extract all high/critical vulnerabilities
+python main.py -t example.com -o ./scan -f json
+cat ./scan/scan_results.json | jq '.vulnerabilities[] | select(.severity == "HIGH" or .severity == "CRITICAL")'
+
+# Count vulnerabilities by severity
+cat ./scan/scan_results.json | jq '[.vulnerabilities[].severity] | group_by(.) | map({severity: .[0], count: length})'
+
+# Extract discovered subdomains
+cat ./scan/scan_results.json | jq '.subdomains[].name'
 ```
 
 ## 📖 Usage
@@ -338,6 +559,17 @@ Planned features for future releases:
 - Compliance reporting (OWASP Top 10, PCI DSS)
 
 ## 📝 Changelog
+
+### v1.1.0 (2026-02-14)
+- **New**: Comprehensive advanced usage examples and documentation
+- **New**: GitHub Actions CI/CD pipeline with automated testing
+- **New**: Docker support with Python 3.13 and security hardening
+- **New**: Professional packaging with pyproject.toml
+- **New**: Code quality tools integration (black, flake8, mypy)
+- **Improved**: Enhanced error handling with contextual tips
+- **Improved**: Diff tool implementation for scan comparison
+- **Improved**: Results display with formatted output
+- **Improved**: Checkpoint saving on interrupt (Ctrl+C)
 
 ### v1.0.1 (2026-02-13)
 - **Fixed**: RateLimiter token bucket algorithm implementation

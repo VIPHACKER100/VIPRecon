@@ -134,7 +134,7 @@ class ProgressTracker:
 |___/___/_/   /_/ |_|\___/\___/\____/_/ /_/  
                                               
 Web Application Reconnaissance & Security Testing Tool
-Version 1.0.1 | Developed by viphacker100 (Aryan Ahirwar)
+Version 1.1.0 | Developed by viphacker100 (Aryan Ahirwar)
         """
         
         self._print_colored(banner, Fore.CYAN, bold=True)

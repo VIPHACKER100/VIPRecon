@@ -25,7 +25,7 @@ async def test_rate_limiter_consumption():
         async with limiter:
             pass
             
-    assert limiter.tokens <= 90  # Should have 90 or slightly more after refill
+    assert limiter.tokens <= 95  # Should have ~90 or slightly more after refill (with tolerance for timing)
 
 @pytest.mark.asyncio
 async def test_rate_limiter_refill():

@@ -1,7 +1,7 @@
 """
 VIPRecon - Web Application Reconnaissance and Security Testing Tool
 Developed by viphacker100 (Aryan Ahirwar)
-Version: 1.0.0
+Version: 1.0.1
 """
 
 import sys

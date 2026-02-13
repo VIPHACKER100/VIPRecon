@@ -6,7 +6,7 @@ Coordinates the execution of all scanning modules.
 import asyncio
 import json
 from pathlib import Path
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Callable
 from datetime import datetime
 from src.core.models import ScanTarget, ScanResult, ScanMetadata
 from src.core.http_client import AsyncHTTPClient
@@ -63,8 +63,8 @@ class ScanOrchestrator:
     async def scan(
         self,
         target_url: str,
-        modules: List[str] = None,
-        progress_callback: callable = None,
+        modules: Optional[List[str]] = None,
+        progress_callback: Optional[Callable] = None,
         resume_from: Optional[str] = None
     ) -> ScanResult:
         """
@@ -296,6 +296,8 @@ class ScanOrchestrator:
 
     async def _run_dir_brute(self, target: ScanTarget, result: ScanResult) -> None:
         """Run directory brute-force."""
+        if self.http_client is None:
+            raise ReconException("HTTP client not initialized")
         forcer = DirectoryBruteForcer(self.http_client)
         items = await forcer.brute_force(target)
         result.directory_items = items
@@ -347,12 +349,16 @@ class ScanOrchestrator:
     
     async def _run_basic_info(self, target: ScanTarget, result: ScanResult) -> None:
         """Run basic information gathering."""
+        if self.http_client is None:
+            raise ReconException("HTTP client not initialized")
         gatherer = BasicInfoGatherer(self.http_client)
         info = await gatherer.gather(target)
         result.target_info = info
     
     async def _run_fingerprinting(self, target: ScanTarget, result: ScanResult) -> None:
         """Run technology fingerprinting."""
+        if self.http_client is None:
+            raise ReconException("HTTP client not initialized")
         # First get the main page
         response = await self.http_client.get(target.url)
         
@@ -362,18 +368,24 @@ class ScanOrchestrator:
     
     async def _run_subdomain_enum(self, target: ScanTarget, result: ScanResult) -> None:
         """Run subdomain enumeration."""
+        if self.http_client is None:
+            raise ReconException("HTTP client not initialized")
         enumerator = SubdomainEnumerator(self.http_client)
         subdomains = await enumerator.enumerate(target.domain)
         result.subdomains = subdomains
     
     async def _run_waf_detection(self, target: ScanTarget, result: ScanResult) -> None:
         """Run WAF detection."""
+        if self.http_client is None:
+            raise ReconException("HTTP client not initialized")
         detector = WAFDetector(self.http_client)
         waf_info = await detector.detect(target)
         result.waf_detected = waf_info
     
     async def _run_api_discovery(self, target: ScanTarget, result: ScanResult) -> None:
         """Run API endpoint discovery."""
+        if self.http_client is None:
+            raise ReconException("HTTP client not initialized")
         # Get main page HTML
         response = await self.http_client.get(target.url)
         
@@ -383,12 +395,16 @@ class ScanOrchestrator:
     
     async def _run_vulnerability_scan(self, target: ScanTarget, result: ScanResult) -> None:
         """Run vulnerability scanning."""
+        if self.http_client is None:
+            raise ReconException("HTTP client not initialized")
         scanner = VulnerabilityScanner(self.http_client)
         vulnerabilities = await scanner.scan(target, result.endpoints)
         result.vulnerabilities = vulnerabilities
     
     async def _run_cors_check(self, target: ScanTarget, result: ScanResult) -> None:
         """Run CORS misconfiguration check."""
+        if self.http_client is None:
+            raise ReconException("HTTP client not initialized")
         checker = CORSChecker(self.http_client)
         cors_vulns = await checker.check(target)
         
@@ -397,6 +413,8 @@ class ScanOrchestrator:
     
     async def _run_js_analysis(self, target: ScanTarget, result: ScanResult) -> None:
         """Run JavaScript analysis."""
+        if self.http_client is None:
+            raise ReconException("HTTP client not initialized")
         # Get main page HTML
         response = await self.http_client.get(target.url)
         
@@ -406,6 +424,8 @@ class ScanOrchestrator:
     
     async def _run_security_headers(self, target: ScanTarget, result: ScanResult) -> None:
         """Run security headers check."""
+        if self.http_client is None:
+            raise ReconException("HTTP client not initialized")
         checker = SecurityHeaderChecker(self.http_client)
         headers = await checker.check(target)
         result.security_headers = headers

@@ -77,6 +77,16 @@ class TargetValidator:
         
         if not target_url:
             raise ValidationException("Target URL cannot be empty")
+        
+        # Check for path traversal attempts (but not in protocol)
+        url_without_protocol = target_url
+        if '://' in target_url:
+            url_without_protocol = target_url.split('://', 1)[1]
+        
+        dangerous_patterns = ['..', '\\', '%2e%2e']
+        for pattern in dangerous_patterns:
+            if pattern in url_without_protocol.lower():
+                raise ValidationException(f"Path traversal attempt detected: {target_url}")
             
         # Add protocol if missing
         original_input = target_url
@@ -214,5 +224,7 @@ def is_valid_http_method(method: str) -> bool:
     """
     Check if an HTTP method is valid.
     """
+    if not method:
+        return False
     valid_methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS', 'TRACE']
-    return method and method.upper() in valid_methods
+    return method.upper() in valid_methods

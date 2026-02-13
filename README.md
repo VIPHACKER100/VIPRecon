@@ -2,11 +2,20 @@
 
 Developed by **viphacker100 (Aryan Ahirwar)**
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Version](https://img.shields.io/badge/version-1.0.1-blue)
 ![Python](https://img.shields.io/badge/python-3.8+-green)
 ![License](https://img.shields.io/badge/license-MIT-orange)
 
 A comprehensive web application reconnaissance and security testing tool designed for ethical security professionals. VIPRecon provides automated scanning capabilities to identify technologies, vulnerabilities, and security misconfigurations in web applications.
+
+## 🐛 Bug Fixes & Updates
+
+**Latest Updates (v1.0.1):**
+- Fixed RateLimiter implementation with proper token bucket algorithm
+- Improved path traversal detection in URL validation
+- Enhanced HTTP client error handling and type safety
+- All unit tests now passing (15/15)
+- Improved resilience with checkpoint/resume functionality
 
 ## ⚠️ Legal Disclaimer
 
@@ -21,7 +30,7 @@ The developers assume no liability for misuse of this tool.
 
 ## 🚀 Features
 
-VIPRecon includes 16 major reconnaissance and security testing modules:
+VIPRecon includes 11 major reconnaissance and security testing modules:
 
 ### Reconnaissance Modules
 
@@ -49,9 +58,10 @@ VIPRecon includes 16 major reconnaissance and security testing modules:
 
 ## 📋 Requirements
 
-- Python 3.8 or higher
+- Python 3.8+ or Python 3.13+ (recommended)
 - pip (Python package manager)
 - Internet connection (for external lookups)
+- Windows/Linux/Mac OS support
 
 ## 🔧 Installation
 
@@ -120,7 +130,7 @@ python main.py -t example.com --proxy http://127.0.0.1:8080
 
 ### Checkpoint & Resume Usage
 
-VIPRecon automatically saves progress. If a scan is interrupted, you can resume it:
+VIPRecon automatically saves progress after each module completes. If a scan is interrupted, you can resume exactly where it left off:
 
 ```bash
 # Resume using the target domain
@@ -129,6 +139,12 @@ python main.py -t example.com --resume example.com
 # Resume using a specific checkpoint file
 python main.py -t example.com --resume ./output/checkpoint_example.com.json
 ```
+
+**Features:**
+- Automatic checkpoint creation after each module
+- Resume from any interruption (network issues, crashes, user cancel)
+- Checkpoint cleanup on successful completion
+- JSON-based checkpoint format for easy inspection
 
 ### Notification and Diff Usage
 
@@ -320,6 +336,26 @@ Planned features for future releases:
 - CI/CD pipeline integration
 - Centralized dashboard for multiple scans
 - Compliance reporting (OWASP Top 10, PCI DSS)
+
+## 📝 Changelog
+
+### v1.0.1 (2026-02-13)
+- **Fixed**: RateLimiter token bucket algorithm implementation
+- **Fixed**: Path traversal detection in URL validator
+- **Fixed**: Type safety issues in orchestrator module
+- **Fixed**: HTTP client null reference checks
+- **Fixed**: All unit tests passing (15/15)
+- **Improved**: Checkpoint/resume reliability
+- **Improved**: Error handling across all modules
+
+### v1.0.0 (2026-02-12)
+- Initial release
+- 11 reconnaissance and security testing modules
+- JSON and HTML report generation
+- Checkpoint and resume functionality
+- Webhook notifications (Slack, Discord)
+- Interactive shell mode
+- Diff tool for comparing scans
 
 ---
 

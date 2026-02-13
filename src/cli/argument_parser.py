@@ -209,7 +209,7 @@ Legal Notice:
     parser.add_argument(
         '--version',
         action='version',
-        version='VIPRecon 1.0.0'
+        version='VIPRecon 1.0.1'
     )
     
     args = parser.parse_args()
